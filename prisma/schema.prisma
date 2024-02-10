@@ -9,3 +9,32 @@ datasource db {
   provider = "mysql"
   url      = env("DB_URL")
 }
+
+
+model Client {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  password  String
+  createdAt DateTime @default(now())
+  company   String
+  employes  Employe[] @relation()
+}
+
+model Employe {
+  id        Int      @id @default(autoincrement())
+  name      String
+  paymentType String
+  paymentMount Float
+  createdAt DateTime @default(now())
+  clientId  Int
+  client    Client   @relation(fields: [clientId], references: [id])
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  password  String
+  createdAt DateTime @default(now())
+}
