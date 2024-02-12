@@ -1,15 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
-import { Admin } from '@prisma/client';
+import { Client } from '@prisma/client';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { AuthService } from '../auth.service';
+import { ClientService } from '../../client/client.service';
 import { JwtPayloadInterface } from '../interfaces/jwtPayload.interface';
 
 @Injectable()
-export class JwtAdminStrategy extends PassportStrategy(Strategy, 'admin-jwt') {
+export class JwtClientStrategy extends PassportStrategy(
+  Strategy,
+  'client-jwt',
+) {
   constructor(
-    private readonly auhtService: AuthService,
+    private readonly clientService: ClientService,
     configService: ConfigService,
   ) {
     super({
@@ -19,10 +22,8 @@ export class JwtAdminStrategy extends PassportStrategy(Strategy, 'admin-jwt') {
     });
   }
 
-  /**
-   * @description Validate user payload from JWT token and emit event to validate user in the system and return the payload.
-   */
-  async validate(payload: JwtPayloadInterface): Promise<Admin> {
-    return await this.auhtService.handleValidateUserEvent(payload);
+  // This method is used to validate the user payload from the JWT token and emit an event to validate the user in the system. It returns the payload.
+  async validate(payload: JwtPayloadInterface): Promise<Client> {
+    return await this.clientService.validateClient(payload);
   }
 }
