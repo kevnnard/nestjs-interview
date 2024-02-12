@@ -1,11 +1,7 @@
-import {
-  BadRequestException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '@ocmi/api/app/configs/prisma/prisma.service';
-import { Admin, Client } from '@prisma/client';
+import { Client } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { RESPONSES } from './constants/responses';
 import { JwtPayloadInterface } from './interfaces/jwtPayload.interface';
@@ -23,7 +19,10 @@ export class AuthService {
    * @param payload
    * @returns
    */
-  async ClientSignIn(body: Client): Promise<JwtResponse> {
+  async ClientSignIn(body: {
+    email: string;
+    password: string;
+  }): Promise<JwtResponse> {
     const userExist = await this.prisma.client.findFirst({
       where: {
         email: body.email,
@@ -50,7 +49,10 @@ export class AuthService {
    * @param payload
    * @returns
    */
-  async AdminSignIn(body: Admin): Promise<JwtResponse> {
+  async AdminSignIn(body: {
+    email: string;
+    password: string;
+  }): Promise<JwtResponse> {
     const userExist = await this.prisma.admin.findFirst({
       where: {
         email: body.email,
@@ -79,7 +81,8 @@ export class AuthService {
         email: body.email,
       },
     });
-    if (userExist) throw new BadRequestException(RESPONSES.USER_ALREADY_EXISTS);
+    if (userExist)
+      throw new UnauthorizedException(RESPONSES.USER_ALREADY_EXISTS);
     const user = await this.prisma.client.create({
       data: {
         name: body.name,
