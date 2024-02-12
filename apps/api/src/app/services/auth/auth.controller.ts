@@ -1,7 +1,7 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { Admin, Client } from '@prisma/client';
 import { AuthService } from './auth.service';
-import { JwtAuthGuard } from './guards/jwt.guard';
+import { JwtAdminGuard } from './guards/admin.guard';
 import { JwtResponse } from './interfaces/jwtResponse.interface';
 
 @Controller('auth')
@@ -21,7 +21,7 @@ export class AuthController {
   }
 
   // This is the endpoint that the admin will use to Create a new user.  It will return a email and password that the admin can use to authenticate with the server.
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAdminGuard)
   @Post('admin/create/client')
   adminCreateUser(@Body() body: Client): Promise<Client> {
     return this.authService.adminCreateUser(body);
