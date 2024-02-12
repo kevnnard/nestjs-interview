@@ -1,5 +1,4 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
-import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Admin, Client } from '@prisma/client';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt.guard';
@@ -7,10 +6,7 @@ import { JwtResponse } from './interfaces/jwtResponse.interface';
 
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private readonly authService: AuthService,
-    private eventEmitter: EventEmitter2,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   // This is the endpoint that the client will use to sign in.  It will return a JWT token that the client can use to authenticate with the server.
   @Post('client/sign-in')
