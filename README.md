@@ -10,7 +10,7 @@
 - [✅] Authenticate using standard e-mail / password authentication
 - [✅] Manage (Create/Read/Update/Delete) their employees
 - [✅] All employees must feature a name, a pay type, and a pay rate
-- [ ] Pay rates must be validated against [Minimum Wage](#Minimum-Wage)
+- [✅] Pay rates must be validated against [Minimum Wage](#Minimum-Wage)
 - [ ] Navigate to a Timesheet where customers can submit payroll
 - [ ] A table with every employee's information on each row
 - [ ] Hourly employees should display an "Hours" input
