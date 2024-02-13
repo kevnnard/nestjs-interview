@@ -44,9 +44,11 @@ export class EmployeeService {
     return this.prisma.employe.update({
       where: {
         id: id,
+        clientId: client.id,
       },
       data: {
         ...body,
+        clientId: client.id,
       },
     });
   }
@@ -65,6 +67,7 @@ export class EmployeeService {
     return this.prisma.employe.create({
       data: {
         ...body,
+        clientId: client.id,
       },
     });
   }
