@@ -2,7 +2,7 @@ import { BadRequestException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '@ocmi/api/app/configs/prisma/prisma.service';
 import { EmployeeService } from '@ocmi/api/app/services/employee/employee.service';
-import { Client, Employe } from '@prisma/client';
+import { Client, Employe, PaymentType } from '@prisma/client';
 
 describe('EmployeeService', () => {
   let employeeService: EmployeeService;
@@ -34,16 +34,18 @@ describe('EmployeeService', () => {
     {
       id: 1,
       name: 'John Doe',
-      paymentType: 'hourly',
-      paymentMount: 12,
+      paymentType: 'HOURLY' as PaymentType,
+      paymentHour: 20,
+      paymentAmount: 12,
       clientId: 1,
       createdAt: new Date(),
     },
     {
       id: 2,
       name: 'John Doe 2',
-      paymentType: 'Salary',
-      paymentMount: 480,
+      paymentType: 'SALARY' as PaymentType,
+      paymentHour: 0,
+      paymentAmount: 480,
       clientId: 2,
       createdAt: new Date(),
     },
@@ -51,8 +53,9 @@ describe('EmployeeService', () => {
   const body: Employe = {
     id: 1,
     name: 'John Doe',
-    paymentType: 'hourly',
-    paymentMount: 12,
+    paymentType: 'HOURLY' as PaymentType,
+    paymentHour: 20,
+    paymentAmount: 12,
     clientId: 1,
     createdAt: new Date(),
   };
@@ -96,7 +99,7 @@ describe('EmployeeService', () => {
     });
 
     it('should throw BadRequestException if employee is not found', async () => {
-      const id = 3;
+      const id = 10;
 
       jest.spyOn(prismaService.employe, 'findUnique').mockResolvedValue(null);
 
@@ -118,8 +121,9 @@ describe('EmployeeService', () => {
       const expectedUpdatedEmployee: Employe = {
         id: 1,
         name: 'John Doe Smith',
-        paymentType: 'hourly',
-        paymentMount: 13,
+        paymentType: 'HOURLY' as PaymentType,
+        paymentHour: 20,
+        paymentAmount: 13,
         clientId: 1,
         createdAt: new Date(),
       };
@@ -142,6 +146,7 @@ describe('EmployeeService', () => {
       });
       expect(prismaService.employe.update).toHaveBeenCalledWith({
         where: {
+          clientId: client.id,
           id: id,
         },
         data: {
@@ -151,7 +156,7 @@ describe('EmployeeService', () => {
     });
 
     it('should throw BadRequestException if employee is not found', async () => {
-      const id = 3;
+      const id = 10;
 
       jest.spyOn(prismaService.employe, 'findUnique').mockResolvedValue(null);
 
@@ -172,8 +177,9 @@ describe('EmployeeService', () => {
       const expectedCreatedEmployee: Employe = {
         id: 1,
         name: 'John Doe Smith',
-        paymentType: 'hourly',
-        paymentMount: 13,
+        paymentType: 'HOURLY' as PaymentType,
+        paymentHour: 20,
+        paymentAmount: 14,
         clientId: 1,
         createdAt: new Date(),
       };
