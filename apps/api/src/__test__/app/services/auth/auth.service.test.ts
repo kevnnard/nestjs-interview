@@ -39,14 +39,27 @@ describe('AuthService', () => {
     jwtService = module.get<JwtService>(JwtService);
   });
 
+  // Mocking Data
+  const mockUser = {
+    id: 1,
+    name: 'Example',
+    company: 'OCMI',
+    createdAt: new Date(),
+    email: 'example@example.com',
+    password: '$2a$10$7w300skxpEjTa8vjuqqoG.4yYjxps6uKoeANc2ClP4aKeRol.tvpC',
+  };
+  const mockJwtResponse = {
+    token: 'mockToken',
+  };
+
   describe('ClientSignIn', () => {
     it('should throw UnauthorizedException if user does not exist', async () => {
       jest.spyOn(prismaService.client, 'findFirst').mockResolvedValue(null);
 
       await expect(
         authService.ClientSignIn({
-          email: 'kevin.leo.24a@hotmail.com',
-          password: 'Kevinleo982413',
+          email: 'example@example.com',
+          password: 'example1234',
         }),
       ).rejects.toThrow(UnauthorizedException);
     });
@@ -54,46 +67,32 @@ describe('AuthService', () => {
     it('should throw UnauthorizedException if password does not match', async () => {
       jest.spyOn(prismaService.client, 'findFirst').mockResolvedValue({
         id: 1,
-        name: 'Kevin',
+        name: 'Example',
         company: 'OCMI',
         createdAt: new Date(),
-        email: 'kevin.leo.24@hotmai.com',
+        email: 'example@example.com',
         password:
-          '$2b$10$OgaSv.xwC7ASSMdYmTh0.uKPSsf6tzsXLxF4sFk7iGaGuuD9Fnkpma',
+          '$2a$10$7w300skxpEjTa8vjuqqoG.4yYjxps6uKoeANc2ClP4aKeRol.tvpaC',
       });
 
       //jest.spyOn(bcrypt, 'compare').mockImplementation(() => false);
 
       await expect(
         authService.ClientSignIn({
-          email: 'kevin.leo.24@hotmail.com',
-          password: 'Kevinleo982413',
+          email: 'example@example.com',
+          password: 'example1234',
         }),
       ).rejects.toThrow(UnauthorizedException);
     });
 
     it('should return a JwtResponse if user exists and password matches', async () => {
-      const mockUser = {
-        id: 1,
-        name: 'Kevin',
-        company: 'OCMI',
-        createdAt: new Date(),
-        email: 'kevin.leo.24@hotmail.com',
-        password:
-          '$2b$10$OgaSv.xwC7ASSMdYmTh0.uKPSsf6tzsXLxF4sFk7iGaGuuD9Fnkpm',
-      };
-
-      const mockJwtResponse = {
-        token: 'mockToken',
-      };
-
       jest.spyOn(prismaService.client, 'findFirst').mockResolvedValue(mockUser);
       //jest.spyOn(bcrypt, 'compare').mockResolvedValue(true);
       jest.spyOn(jwtService, 'sign').mockReturnValue(mockJwtResponse.token);
 
       const result = await authService.ClientSignIn({
-        email: 'kevin.leo.24@hotmail.com',
-        password: 'Kevinleo982413',
+        email: 'example@example',
+        password: 'example1234',
       });
 
       expect(result).toEqual(mockJwtResponse);
@@ -106,8 +105,8 @@ describe('AuthService', () => {
 
       await expect(
         authService.AdminSignIn({
-          email: 'londonokevin9@gmail.com',
-          password: 'Kevinleo982413',
+          email: 'example@example',
+          password: 'example1234',
         }),
       ).rejects.toThrow(UnauthorizedException);
     });
@@ -115,45 +114,31 @@ describe('AuthService', () => {
     it('should throw UnauthorizedException if password does not match', async () => {
       jest.spyOn(prismaService.admin, 'findFirst').mockResolvedValue({
         id: 1,
-        name: 'Kevin',
+        name: 'Example',
         createdAt: new Date(),
-        email: 'londonokevin9@gmail.com',
+        email: 'example@example.com',
         password:
-          '$2b$10$OgaSv.xwC7ASSMdYmTh0.uKPSsf6tzsXLxF4sFk7iGaGuuD9Fnkpma',
+          '$2a$10$7w300skxpEjTa8vjuqqoG.4yYjxps6uKoeANc2ClP4aKeRaol.tvpC',
       });
 
       //jest.spyOn(bcrypt, 'compare').mockImplementation(() => false);
 
       await expect(
         authService.AdminSignIn({
-          email: 'londonokevin9@gmail.com',
-          password: 'Kevinleo982413',
+          email: 'example@example.com',
+          password: 'example1234',
         }),
       ).rejects.toThrow(UnauthorizedException);
     });
 
     it('should return a JwtResponse if user exists and password matches', async () => {
-      const mockUser = {
-        id: 1,
-        name: 'Kevin',
-        company: 'OCMI',
-        createdAt: new Date(),
-        email: 'londonokevin9@gmail.com',
-        password:
-          '$2b$10$OgaSv.xwC7ASSMdYmTh0.uKPSsf6tzsXLxF4sFk7iGaGuuD9Fnkpm',
-      };
-
-      const mockJwtResponse = {
-        token: 'mockToken',
-      };
-
       jest.spyOn(prismaService.admin, 'findFirst').mockResolvedValue(mockUser);
       //jest.spyOn(bcrypt, 'compare').mockResolvedValue(true);
       jest.spyOn(jwtService, 'sign').mockReturnValue(mockJwtResponse.token);
 
       const result = await authService.AdminSignIn({
-        email: 'londonokevin9@gmail.com',
-        password: 'Kevinleo982413',
+        email: 'example@example.com',
+        password: 'example1234',
       });
 
       expect(result).toEqual(mockJwtResponse);
@@ -164,47 +149,37 @@ describe('AuthService', () => {
     it('should throw BadRequestException if user already exists', async () => {
       jest.spyOn(prismaService.client, 'findFirst').mockResolvedValue({
         id: 1,
-        name: 'Kevin',
+        name: 'Example',
         company: 'OCMI',
         createdAt: new Date(),
-        email: 'Kevin.leo.24@hotmail.com',
+        email: 'example@example.com',
         password:
-          '$2b$10$OgaSv.xwC7ASSMdYmTh0.uKPSsf6tzsXLxF4sFk7iGaGuuD9Fnkpm',
+          '$2a$10$7w300skxpEjTa8vjuqqoG.4yYjxps6uKoeANc2ClP4aKeRol.tvpC',
       });
 
       await expect(
         authService.adminCreateUser({
           id: 1,
-          name: 'Kevin',
+          name: 'Example',
           company: 'OCMI',
           createdAt: new Date(),
-          email: 'Kevin.leo.24@hotmail.com',
-          password: 'Kevinleo982413',
+          email: 'exmaple@example.com',
+          password: 'example1234',
         }),
       ).rejects.toThrow(UnauthorizedException);
     });
 
     it('should return a Client if user does not exist', async () => {
-      const mockUser = {
-        id: 1,
-        name: 'Kevin',
-        company: 'OCMI',
-        createdAt: new Date(),
-        email: 'Kevin.leo.98@hotmail.com',
-        password:
-          '$2b$10$OgaSv.xwC7ASSMdYmTh0.uKPSsf6tzsXLxF4sFk7iGaGuuD9Fnkpm',
-      };
-
       jest.spyOn(prismaService.client, 'findFirst').mockResolvedValue(null);
       jest.spyOn(prismaService.client, 'create').mockResolvedValue(mockUser);
 
       const result = await authService.adminCreateUser({
         id: 1,
-        name: 'Kevin',
+        name: 'Exmaple',
         company: 'OCMI',
         createdAt: new Date(),
-        email: 'kevin.leo.98@hotmail.com',
-        password: 'Kevinleo982413',
+        email: 'example@example.com',
+        password: 'example1234',
       });
 
       expect(result).toEqual(mockUser);
