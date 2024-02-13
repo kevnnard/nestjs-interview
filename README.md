@@ -14,16 +14,16 @@
 - [ ] Navigate to a Timesheet where customers can submit payroll
 - [ ] A table with every employee's information on each row
 - [ ] Hourly employees should display an "Hours" input
-- [ ] Customers must be able to specify the Check Date of the payroll
+- [✅] Customers must be able to specify the Check Date of the payroll
 - [ ] Gross wages for each employee should be displayed on each row
 - [ ] Total gross wages for the whole timesheet should be displayed below
-- [ ] View previously submitted timesheets and the status of each timesheet
-- [ ] Should only be able to view their own information
+- [✅] View previously submitted timesheets and the status of each timesheet
+- [✅] Should only be able to view their own information
 
 - [✅] Authenticate using standard e-mail / password authentication
-- [ ] View timesheets submitted by all companies
-- [ ] Set a status on timesheets submitted by any customer
-- [ ] Write notes on timesheets submitted by any customer
+- [✅] View timesheets submitted by all companies
+- [✅] Set a status on timesheets submitted by any customer
+- [✅] Write notes on timesheets submitted by any customer
 - [✅] Create and edit accounts for customers
 - [✅] Customers must feature a business name, an e-mail, and a password
 
