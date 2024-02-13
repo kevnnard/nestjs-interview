@@ -10,31 +10,54 @@ datasource db {
   url      = env("DB_URL")
 }
 
-
-model Client {
-  id        Int      @id @default(autoincrement())
+model Admin {
+  id        Int       @id @default(autoincrement())
   name      String
   email     String
   password  String
-  createdAt DateTime @default(now())
-  company   String
-  employes  Employe[] @relation()
+  createdAt DateTime?  @default(now())
+}
+
+model Client {
+  id          Int           @id @default(autoincrement())
+  company     String        @unique
+  name        String
+  email       String
+  password    String
+  createdAt   DateTime?      @default(now())
+  employes    Employe[]
+  timeSheets  TimeSheet[]
 }
 
 model Employe {
-  id        Int      @id @default(autoincrement())
-  name      String
-  paymentType String
-  paymentMount Float
-  createdAt DateTime @default(now())
-  clientId  Int
-  client    Client   @relation(fields: [clientId], references: [id])
+  id              Int        @id @default(autoincrement())
+  name            String
+  paymentType     PaymentType@default(SALARY)
+  paymentAmount   Float      @default(480)
+  paymentHour     Int?       @default(0)
+  createdAt       DateTime?  @default(now())
+  client          Client     @relation(fields: [clientId], references: [id])
+  clientId        Int
+  timeSheets      TimeSheet[]
 }
 
-model Admin {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String
-  password  String
-  createdAt DateTime @default(now())
+enum PaymentType {
+  SALARY
+  HOURLY
+}
+
+model TimeSheet {
+  id          Int          @id @default(autoincrement())
+  note        String?      @default("")
+  status      Status?      @default(PENDING)
+  createdAt   DateTime?    @default(now())
+  client      Client       @relation(fields: [clientId], references: [id])
+  clientId    Int
+  employees   Employe[]
+}
+
+enum Status {
+  PENDING
+  APPROVED
+  REJECTED
 }
