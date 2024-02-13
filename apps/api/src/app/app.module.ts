@@ -9,6 +9,7 @@ import { HelloCommand } from '@ocmi/api/commands/hello.command';
 import { PrismaModule } from 'nestjs-prisma';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AdminModule } from './services/admin/admin.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { AppService } from './app.service';
     AuthModule,
     ClientModule,
     EmployeeModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService, HelloCommand],
