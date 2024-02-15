@@ -81,6 +81,11 @@ export class AuthService {
     return user;
   }
 
+  // Get all the clients in the system and return the list of clients.
+  async adminGetClients(): Promise<Client[]> {
+    return this.prisma.client.findMany();
+  }
+
   // Validate user payload from JWT token and emit event to validate user in the system and return the payload.
   async handleValidateUserEvent(payload: JwtPayloadInterface) {
     const user = await this.prisma.admin.findFirst({
