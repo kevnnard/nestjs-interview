@@ -1,0 +1,23 @@
+[
+  [
+    {
+      "title": "Home",
+      "link": "",
+      "icon": "HOME"
+    }
+  ],
+  [
+    {
+      "title": "Clients",
+      "link": "clients",
+      "icon": "PEOPLE"
+    }
+  ],
+  [
+    {
+      "title": "TimeSheets",
+      "link": "timesheets",
+      "icon": "TIMESHEETS"
+    }
+  ]
+]
