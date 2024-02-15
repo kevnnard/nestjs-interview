@@ -1,7 +1,3 @@
-export default async function Index() {
-  return (
-    <div className="text-2xl">
-      <h1>Welcome to apps/frontend!</h1>
-    </div>
-  );
+export default function RootPage() {
+  return <h1>Dashboard</h1>;
 }

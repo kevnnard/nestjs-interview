@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { Admin, Client } from '@prisma/client';
 import { AuthService } from './auth.service';
 import { JwtAdminGuard } from './guards/admin.guard';
@@ -25,5 +25,12 @@ export class AuthController {
   @Post('admin/create/client')
   adminCreateUser(@Body() body: Client): Promise<Client> {
     return this.authService.adminCreateUser(body);
+  }
+
+  // This is the endpoint that the admin will use to get all the clients.  It will return a list of all the clients.
+  @UseGuards(JwtAdminGuard)
+  @Get('admin/clients')
+  adminGetClients(): Promise<Client[]> {
+    return this.authService.adminGetClients();
   }
 }

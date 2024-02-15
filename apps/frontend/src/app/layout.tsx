@@ -1,3 +1,5 @@
+import { Toaster } from '@ocmi/frontend/ui/components/sonner';
+import { AuthProvider } from '../contexts/Auth.context';
 import './global.css';
 
 export const metadata = {
@@ -11,8 +13,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html
+      lang="en"
+      suppressHydrationWarning={true}
+      className="bg-ligth dark:bg-dark text-dark dark:text-ligth"
+    >
+      <body className="min-h-screen">
+        <AuthProvider>{children}</AuthProvider>
+        {/* ADD SONNER TOASTER COMPONENT HERE TO DISPLAY TOASTS IN THE APP  */}
+        <Toaster richColors />
+      </body>
     </html>
   );
 }
